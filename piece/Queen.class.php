@@ -25,8 +25,8 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-  include_once('../Board.class.php');
-  include_once('../Piece.class.php');
+  include_once('Board.class.php');
+  include_once('Piece.class.php');
 
   class Queen extends Piece {
   
