@@ -90,7 +90,7 @@
 
 	
 	
-	function set_captured() {
+	function set_captured($set) {
 	    //"King can't be captured";
 	}  
   
