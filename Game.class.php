@@ -25,6 +25,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+  chdir(dirname(__File__));
   include_once('Board.class.php');
   include_once('game/MoveList.class.php');
   include_once('Piece.class.php');
@@ -69,8 +70,10 @@
      */
 	function __construct($p1 = '', $p2 = ''){
 		#player names
-    	$player1	= $p1 ? $p1:'white';
-    	$player2	= $p2 ? $p2:'black';
+        $playerName1    = $p1 ? $p1:'white';
+        $playerName2    = $p2 ? $p2:'black';
+        $player1        = 'white';
+        $player2        = 'black';
     	
     	#create the board content
     	$this->board 			= new Board();
@@ -584,7 +587,7 @@
 	    $piece 		= $board->get_piece_at($sq1);
 	    
 	    #trying to move invisible piece
-	    if($piece == NULL) return -1;
+	    if($piece == NULL) return false;
 	    
 	    $player 	= $piece->get_player();
 	    $movelist 	= $this->movelist;
@@ -663,7 +666,7 @@
 			$board_c = clone $board;
 			$board_c->set_piece_at($sq1, NULL);
 			$board_c->set_piece_at($sq2, NULL);
-			if($board_c->line_is_open($sq1, $sq2) == false) {
+			if(!$piece instanceof Knight && $board_c->line_is_open($sq1, $sq2) == false) {
 			    $this->message = "Line '$sq1' - '$sq2' is blocked";
 			    return false;
 			}
@@ -718,6 +721,24 @@
     }
     
     
+    
+    /**
+      * Returns an array of all legal moves that can be made at the present time.
+      */
+    public function legal_moves() {
+        $legal = array();
+        for ($s1=a;$s1<i;$s1++)
+            for ($q1=1;$q1<9;$q1++)
+                for ($s2=a;$s2<i;$s2++)
+                    for ($q2=1;$q2<9;$q2++) {
+                        $sq1 = $s1 . $q1;
+                        $sq2 = $s2 . $q2;
+                        if ($sq1 != $sq2 && $this->board->get_piece_at($sq1) != NULL && $this->is_move_legal($sq1,$sq2)==true)
+                            array_push($legal, $sq1 . "," . $sq2);
+                        }
+        return $legal;
+    }
+
     
     
     /**
