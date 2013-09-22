@@ -63,6 +63,10 @@
 	return $board_arr;
     }
   	
+    public function get_board_arr() {
+        return (object)$this->board_arr;
+    }
+
   	
   	/**
   	 * Returns a Board object reference which isidentical to the caller object.
@@ -128,7 +132,7 @@
   	 * @return bool true if valid board position or false otherwise
   	 */
   	public static function square_is_valid($sq){
-	    return ereg('^[A-Ha-h][1-8]$',$sq) > 0;
+	    return preg_match('/^[A-Ha-h][1-8]$/',$sq) > 0;
   	}
   	
   	
