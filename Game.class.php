@@ -369,7 +369,7 @@
     	$p2_king->set_threatened(0);
     	
     	foreach($p1_pieces as $p1_piece){
-    	                if (get_class($p2_piece) == "Game") continue;
+    	                if (get_class($p1_piece) == "Game") continue;
 			if ($p1_piece instanceof King || $p1_piece->captured()) 
 				continue;
 			$p1_sq = $p1_piece->get_current_square();
@@ -391,7 +391,7 @@
 			    if(!$board_c->line_is_open($p1_sq, $p2_sq))
 			    	continue;
 			}
-			$p2_king->set_threatened(1);
+ 			$p2_king->set_threatened(1);
     	}
   	    
     	foreach($p2_pieces as $key => $p2_piece){
