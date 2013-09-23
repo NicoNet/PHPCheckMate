@@ -39,13 +39,14 @@
 	    $sq1 = Board::square_left_of($csq);
 	    if ($sq1) {
 			$squares[] = $sq1;
-			
+			echo "sq1";
+			print_r( $sq1);
 			$sq2 = Board::square_up_from($sq1);
-			if(defined($sq2))
+			if($sq2)
 				$squares[] = $sq2;
 				
 			$sq2 = Board::square_down_from($sq1);
-			if(defined($sq2))
+			if($sq2)
 				$squares[] = $sq2;
 	    }
 	    

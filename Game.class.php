@@ -357,7 +357,7 @@
      */
     
   	private function _mark_threatened_kings($game){
-  		$player1 	= $game->players[0];
+  	$player1 	= $game->players[0];
     	$player2 	= $game->players[1];
     	$p1_pieces 	= $game->pieces[$player1];
     	$p2_pieces 	= $game->pieces[$player2];
@@ -370,10 +370,12 @@
     	
     	foreach($p1_pieces as $p1_piece){
     	                if (get_class($p1_piece) == "Game") continue;
-			if ($p1_piece instanceof King || $p1_piece->captured()) 
+                        //var_dump($p1_piece->captured());
+			if ($p1_piece->captured()) 
 				continue;
 			$p1_sq = $p1_piece->get_current_square();
 			$p2_sq = $p2_king->get_current_square();
+                        echo $p1_sq . '!' . $p2_sq;
 			if(!$p1_piece->can_reach($p2_sq))
 				continue;
 			if($p1_piece instanceof Pawn){
@@ -381,6 +383,8 @@
 			    	continue;
 			}
 			elseif($p1_piece instanceof King){
+ 			    echo Board::horz_distance($p1_sq, $p2_sq);
+			    echo $p1_sq . '.' . $p2_sq;
 			    if(Board::horz_distance($p1_sq, $p2_sq) == 2)
 			    	continue;
 			}
@@ -391,22 +395,28 @@
 			    if(!$board_c->line_is_open($p1_sq, $p2_sq))
 			    	continue;
 			}
- 			$p2_king->set_threatened(1);
+ 			$p2_king->set_threatened(true);
+ 			break; //No need for further checking
     	}
   	    
-    	foreach($p2_pieces as $key => $p2_piece){
+    	foreach($p2_pieces as $p2_piece){
     	                if (get_class($p2_piece) == "Game") continue;
-			if ($p2_piece instanceof King || $p2_piece->captured())
+			if ($p2_piece->captured())
 				continue;
 			$p2_sq = $p2_piece->get_current_square();
 			$p1_sq = $p1_king->get_current_square();
+                        echo $p2_sq . '!' . $p1_sq; 
+                        var_dump($p2_piece->reachable_squares());
 			if(!$p2_piece->can_reach($p1_sq))
 				continue;
+                        echo 'REACH!';
 			if($p2_piece instanceof Pawn){
 			    if (Board::horz_distance($p1_sq, $p2_sq) == 0)
 			    	continue;
 			}
 			elseif($p2_piece instanceof King){
+ 			    echo Board::horz_distance($p2_sq, $p1_sq);
+			    echo $p2_sq . '.' . $p1_sq;
 			    if(Board::horz_distance($p1_sq, $p2_sq) == 2)
 			    	continue;
 			}
@@ -417,7 +427,8 @@
 			    if(!$board_c->line_is_open($p1_sq, $p2_sq))
 			    	continue;
 			}
-			$p1_king->set_threatened(1);
+			$p1_king->set_threatened(true);
+			break; //No need for further checking
     	}   
     }
     
@@ -583,8 +594,8 @@
 	    if(Board::square_is_valid($sq1) == false) return false;
 	    if(Board::square_is_valid($sq2) == false) return false;
 
-  		$player1 	= $this->players[0];
-    	$player2 	= $this->players[1];
+  	    $player1 		= $this->players[0];
+            $player2 		= $this->players[1];
 	    $board 		= $this->board;
 	    $piece 		= $board->get_piece_at($sq1);
 	    
@@ -676,8 +687,10 @@
 	    
 	    #move is not a castle
 	    if(!$valid_castle) {
+			echo 'making clone move' . $sq1 . "," . $sq2;
 			$clone->make_move($sq1, $sq2, false);
 			self::_mark_threatened_kings($clone);
+                        var_dump($king->threatened());
 			if($king->threatened()) {
 			    $this->message = "Move leaves your king in check";
 			    return false;
