@@ -401,7 +401,6 @@
 				continue;
 			$p2_sq = $p2_piece->get_current_square();
 			$p1_sq = $p1_king->get_current_square();
-                        var_dump($p2_piece->reachable_squares());
 			if(!$p2_piece->can_reach($p1_sq))
 				continue;
 			if($p2_piece instanceof Pawn){
@@ -679,10 +678,8 @@
 	    
 	    #move is not a castle
 	    if(!$valid_castle) {
-			echo 'making clone move' . $sq1 . "," . $sq2;
 			$clone->make_move($sq1, $sq2, false);
 			self::_mark_threatened_kings($clone);
-                        var_dump($king->threatened());
 			if($king->threatened()) {
 			    $this->message = "Move leaves your king in check";
 			    return false;
