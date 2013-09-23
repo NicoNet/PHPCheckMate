@@ -728,20 +728,23 @@
       * Returns an array of all legal moves that can be made at the present time.
       */
     public function legal_moves() {
+        $movelist 	= $this->movelist;
+	$last_moved 	= $movelist->get_last_moved();
+	if ($last_moved==NULL) $last_moved="Black";
+	$player1 	= $this->players[0];
+	$player2 	= $this->players[1];
+	$player 	= $last_moved == $player1 ? $player2 : $player1;
+	$pieces		= $this->pieces[$player];
         $legal = array();
-        for ($s1=a;$s1<i;$s1++)
-            for ($q1=1;$q1<9;$q1++)
-                for ($s2=a;$s2<i;$s2++)
-                    for ($q2=1;$q2<9;$q2++) {
-                        $sq1 = $s1 . $q1;
-                        $sq2 = $s2 . $q2;
-                        if ($sq1 != $sq2 && $this->board->get_piece_at($sq1) != NULL && $this->is_move_legal($sq1,$sq2)==true)
-                            array_push($legal, $sq1 . "," . $sq2);
-                        }
+	foreach ($pieces as $piece) {
+            $rsqs   = $piece->reachable_squares();
+            $csq    = $piece->get_current_square();
+            foreach ($rsqs as $sq) {
+                if ($this->is_move_legal($csq,$sq)) array_push($legal, $csq . ',' . $sq);
+            }
+        }
         return $legal;
-    }
-
-    
+    }   
     
     /**
      * Takes two parameters containing the name of the square to move from and 
