@@ -370,12 +370,10 @@
     	
     	foreach($p1_pieces as $p1_piece){
     	                if (get_class($p1_piece) == "Game") continue;
-                        //var_dump($p1_piece->captured());
 			if ($p1_piece->captured()) 
 				continue;
 			$p1_sq = $p1_piece->get_current_square();
 			$p2_sq = $p2_king->get_current_square();
-                        echo $p1_sq . '!' . $p2_sq;
 			if(!$p1_piece->can_reach($p2_sq))
 				continue;
 			if($p1_piece instanceof Pawn){
@@ -383,8 +381,6 @@
 			    	continue;
 			}
 			elseif($p1_piece instanceof King){
- 			    echo Board::horz_distance($p1_sq, $p2_sq);
-			    echo $p1_sq . '.' . $p2_sq;
 			    if(Board::horz_distance($p1_sq, $p2_sq) == 2)
 			    	continue;
 			}
@@ -405,18 +401,14 @@
 				continue;
 			$p2_sq = $p2_piece->get_current_square();
 			$p1_sq = $p1_king->get_current_square();
-                        echo $p2_sq . '!' . $p1_sq; 
                         var_dump($p2_piece->reachable_squares());
 			if(!$p2_piece->can_reach($p1_sq))
 				continue;
-                        echo 'REACH!';
 			if($p2_piece instanceof Pawn){
 			    if (Board::horz_distance($p1_sq, $p2_sq) == 0)
 			    	continue;
 			}
 			elseif($p2_piece instanceof King){
- 			    echo Board::horz_distance($p2_sq, $p1_sq);
-			    echo $p2_sq . '.' . $p1_sq;
 			    if(Board::horz_distance($p1_sq, $p2_sq) == 2)
 			    	continue;
 			}
