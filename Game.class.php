@@ -728,6 +728,7 @@
     
     /**
       * Returns an array of all legal moves that can be made at the present time.
+      * Can provide a pieceType and only moves of that piece type will be returned.
       */
     public function legal_moves($pieceType="") {
         $movelist 	= $this->movelist;
