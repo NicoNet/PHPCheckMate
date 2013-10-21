@@ -751,24 +751,23 @@
     
     /**
      * Returns and MD5 hash of the board, which should be unique based on the currently
-     * possible moves and castleability.  First we get a list of all possible pawn moves
-     * which will indicate en-passant possible moved too.  Then we generate a list of the
-     * initial and current positions of every piece.  Then each King and Rook initial
-     * position is checked to determine if the piece had moved prior.  Everything is
-     * concatenated and then MD5 summed.  This can used for checking for 3rd repetition
-     * draws.
+     * possible moves and castleability.
      */
      
     public function boardMD5() {
         $possiblePawnMoves = serialize($this->legal_moves("Pawn"));
+//        print_r($this->legal_moves("Pawn"));
+//        echo 'psss' . $possiblePawnMoves;
         $pieceList = '';
         for ($r = 1; $r < 9;$r++)
             for ($f = a; $f < i; $f++)
                 if (is_object($this->board->get_piece_at($f . $r)))
-                    $pieceList .= $this->board->get_piece_at($f . $r)->get_initial_square() . $f . $r;
+                    $pieceList .= $this->board->get_piece_at($f . $r)->get_initial_square() . $this->board->get_piece_at($f . $r)->get_current_square();
+//        echo 'plll' . $pieceList;
         $castlePieces = array('a1','e1','h1','a8','e8','h8');
         foreach ($castlePieces as $p) 
             $castleState .= $this->board->get_piece_at($p)->moved();
+        echo 'cssss' . $castleState;
         $result = md5($possiblePawnMoves . $pieceList . $castleState);
         return $result;
     }
