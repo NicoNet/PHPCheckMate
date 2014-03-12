@@ -45,7 +45,7 @@
   		$this->board_arr = $this->_get_empty_board();
   	}
   	
-    private function _get_empty_board() {
+    private static function _get_empty_board() {
     $board_arr	= array();
     
 	#color the board
